@@ -1,0 +1,132 @@
+.row
+  .column.small-12
+    table
+      thead
+        tr
+          th Brand Name
+          th Generic Name
+          th Description
+          th Available Stock  
+          th 
+            a.icon-plus-1(ng-click="data.toggleModal()")
+            a.icon-search(ng-click="search.toggleModal()")
+            a.icon-pencil(ng-click="symptom.toggleModal()")
+      tbody
+        tr(ng-repeat="med in data.medicines")
+          td(ng-class="{'empty':med.count === 0}") {{ med.brandName }}
+          th {{ med.genericName }}
+          th {{ med.description }}
+          th(ng-class="{'empty':med.count === 0}") {{ med.count }}
+          th 
+            a.icon-info(ng-click="active.toDisplay(med); active.select(med)")
+            a(ng-click="active.toggleModal(); active.select(med)") Get Medicine
+      tfoot
+        tr
+          th
+            a.icon-left-bold
+          th &nbsp
+          th &nbsp
+          th &nbsp
+          th 
+            a.icon-right-bold
+
+modal(show='addMedicineModal', title='Add Medicine to Inventory', class="fixed")
+  .row.company
+    form(name="companyForm", method="POST")
+      input#bname(type="text", placeholder="Brand Name", value="{{active.modal.brandName}}", ng-model="active.modal.brandName")
+      input#gname(type="text", placeholder="Generic Name", value="{{active.modal.genericName}}", ng-model="active.modal.genericName")
+      input#desc(type="text", placeholder="Description", value="{{active.modal.description}}", ng-model="active.modal.description")
+      input#dosage(type="text", placeholder="Recommended Dosage", value="{{active.modal.dosage}}", ng-model="active.modal.dosage")
+
+      label Stock
+      .row
+        .small-3.column.small-offset-3.number
+          input.left(type="text", disabled, ng-model="active.modal.count")
+          .icon-minus.left(ng-click="counter.subtract(0)")
+          .icon-plus(ng-click="counter.add(0)")
+
+  .row
+    hr
+    .small-2.small-offset-6.text-center.columns
+      a(data-dismiss="modal", ng-click="hideModal()", role="button", style="color:grey") Close
+    .small-2.columns.text-center
+      a(data-dismiss="modal", ng-click="company.remove(active.index)", role="button", style="color:red") Delete
+    .small-2.columns.text-center
+      a(data-dismiss="modal", role="button", data-ng-click="data.save()", style="color:blue") Save
+
+.row(ng-show="active.display === true")
+  h1 Brand Name: {{active.selected.brandName}}
+  .row
+    .small-6.column
+      h5 Generic Name: {{active.selected.genericName}}
+    .small-6.column
+      h5 Available stock:  {{active.selected.count}}
+  .row
+    .column.small-12
+      table
+        thead
+          tr
+            th Meditab Id
+            th Name
+            th Email
+            th No. Tablets
+            th date
+            th Person around
+        tbody
+          tr(ng-repeat="log in active.logs")
+            th {{log.meditabId}}
+            th {{log.fullName}}
+            th {{log.email}}
+            th {{log.medicine.count}}
+            th {{log.medicine.data | date:'short'}}
+            th {{log.inAttendance.email}}
+
+
+modal(show='getMedicineModal', title='Get Medicine', class='fixed')
+  h1 Brand Name: {{active.selected.brandName}}
+  .row.company
+    form(name="companyForm", method="POST")
+      input#name(type="text", placeholder="Employee Name", value="{{active.log.fullName}}", ng-model="active.log.fullName")
+      input#email(type="email", placeholder="Email", value="{{active.log.email}}", ng-model="active.log.email")
+      input#meditabId(type="text", placeholder="MeditabId", value="{{active.log.meditabId}}", ng-model="active.log.meditabId")
+      input#inAttendance(type="text", placeholder="Person Around", value="{{active.log.inAttendance}}", ng-model="active.log.inAttendance")
+      label Item count
+      .row
+        .small-3.column.small-offset-3.number
+          input.left(type="text", disabled, ng-model="active.log.count")
+          .icon-minus.left(ng-click="counter.subtract(1)")
+          .icon-plus(ng-click="counter.add(1)")
+
+  .row
+    hr
+    .small-2.small-offset-6.text-center.columns
+      a(data-dismiss="modal", ng-click="hideModal()", role="button", style="color:grey") Close
+    .small-2.columns.text-center
+      a(data-dismiss="modal", ng-click="company.remove(active.index)", role="button", style="color:red") Delete
+    .small-2.columns.text-center
+      a(data-dismiss="modal", role="button", data-ng-click="active.save(active.log)", style="color:blue") Save
+
+
+modal(show='searchModal', title='Search Medicine', class="fixed")
+
+
+modal(show='symptomModal', title='Add Symptom Tags', class='fixed')
+  .row.company
+    .large-6.columns.left_column
+      .row
+        input(type="text", placeholder="Name", value="{{data.symptom.name}}", ng-model="data.symptom.name")
+        input(type="text", placeholder="Description", value="{{data.symptom.description}}", ng-model="data.symptom.description")
+      .row
+        hr
+        .small-2.small-offset-6.text-center.columns
+          a(data-dismiss="modal", ng-click="hideModal()", role="button", style="color:grey") Close
+        .small-2.columns.text-center
+          a(data-dismiss="modal", ng-click="company.remove(active.index)", role="button", style="color:red") Delete
+        .small-2.columns.text-center
+          a(data-dismiss="modal", role="button", data-ng-click="data.symptomSave()", style="color:blue") Save
+    .large-6.columns.right_column
+      h3 List of Symptoms
+      ul#symptoms
+        li.list_item(ng-repeat="symp in data.symptoms")
+          .mall-11.column
+            | {{ symp.name }}

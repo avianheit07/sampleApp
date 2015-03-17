@@ -1,0 +1,35 @@
+doctype html
+html(ng-app="RegistrationApp")
+    head
+        title Employer
+        base(href="http://localhost:1337/")
+        meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1")
+
+        // STYLES
+        link(rel="stylesheet", href="/styles/dependencies/foundation/foundation.css")
+        link(rel="stylesheet", href="/styles/dependencies/foundation/normalize.css")
+        link(rel="stylesheet", href="/styles/common/directives/modalDirective/modal.css")
+        // STYLES END
+
+    body
+        // TEMPLATES
+        script(type="text/javascript", src="/templates/jst_employer.js")
+        // TEMPLATES END
+        .row
+            .column.small-12.text-center
+                a(href="/")
+                    h1 Employer Account
+        section
+            ng-view
+        .row(ng-controller="MainCtrl")
+            .column.small-12
+                a.button.radius.small.expand(ng-click="logout()") Logout
+        // SCRIPTS
+        script(src="/js/dependencies/angular/angular.js")
+        script(src="/js/dependencies/angular/angular-animate.js")
+        script(src="/js/dependencies/angular/angular-resource.js")
+        script(src="/js/dependencies/angular/angular-route.js")
+        script(src="/js/dependencies/lodash/lodash.js")
+        script(src="/js/common/directives/modalDirective/directive.js")
+        // SCRIPTS END
+
